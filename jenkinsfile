@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        TF_IN_AUTOMATION = 'true'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                // Si ton Jenkinsfile est dans le repo, cette ligne suffit
+                checkout scm
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                sh 'terraform init'
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                sh 'terraform validate'
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                sh 'terraform plan -out=tfplan.out'
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                // Pour un TP on auto-approve, en prod on mettrait une validation manuelle
+                sh 'terraform apply -auto-approve tfplan.out'
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline terminé (succès ou échec).'
+            // Optionnel : archiver le plan Terraform
+            archiveArtifacts artifacts: 'tfplan.out', allowEmptyArchive: true
+        }
+    }
+}

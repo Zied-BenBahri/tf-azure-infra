@@ -1,0 +1,30 @@
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Sensitive / editor
+*.tfvars
+*.tfvars.json
+*.pem
+*.key
+*.pub
+*.crt
+*.pfx
+.vscode/
+*.log
+
+# Azure CLI / local caches
+/.azure/
+msal*.bin
+
+# OS
+Thumbs.db
+.DS_Store
