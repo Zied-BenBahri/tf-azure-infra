@@ -9,7 +9,6 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                // Si ton Jenkinsfile est dans le repo, cette ligne suffit
                 checkout scm
             }
         }
@@ -34,8 +33,19 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                // Pour un TP on auto-approve, en prod on mettrait une validation manuelle
                 sh 'terraform apply -auto-approve tfplan.out'
+            }
+        }
+
+        stage('Generate Inventory') {
+            steps {
+                sh './ansible/generate_inventory.sh'
+            }
+        }
+
+        stage('Deploy with Ansible') {
+            steps {
+                sh 'ansible-playbook -i ansible/inventory.ini ansible/playbook.yaml'
             }
         }
     }
@@ -43,7 +53,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline terminé (succès ou échec).'
-            // Optionnel : archiver le plan Terraform
             archiveArtifacts artifacts: 'tfplan.out', allowEmptyArchive: true
         }
     }
