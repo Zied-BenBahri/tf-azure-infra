@@ -39,8 +39,7 @@ pipeline {
 
         stage('Generate Inventory') {
             steps {
-                sh 'chmod +x ansible/generate_inventory.sh'
-                sh './ansible/generate_inventory.sh'
+                sh 'bash ansible/generate_inventory.sh'
             }
         }
 
