@@ -12,4 +12,3 @@ $IP ansible_user=azureuser ansible_ssh_pass=$PASSWORD
 [web:vars]
 ansible_python_interpreter=/usr/bin/python3
 EOINV
-EOF
